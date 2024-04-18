@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: Balance Event API
+  description: API for managing customer balance events and retrieving balance information.
+  version: '1.0.0'
+servers:
+  - url: 'http://localhost:3001'
+    description: Local server
+  - url: 'https://customer-balance-ynxku3oura-ey.a.run.app'
+    description: Google Cloud Run server
+  - url: /
+    description: host
+paths:
+  /api/events/{retailUnitCode}/{customerId}:
+    post:
+      summary: Record a balance event for a customer
+      description: Accepts a balance event and records it, updating the customer's balance accordingly.
+      operationId: addBalanceEvent
+      parameters:
+        - name: retailUnitCode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The retail unit code.
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier of the customer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BalanceEvent'
+      responses:
+        '200':
+          description: Successfully retrieved balance information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBalanceEventResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /api/events/{retailUnitCode}/{customerId}/{activity}/{period}:
+    get:
+      summary: Retrieve balance details for a period
+      description: Returns the opening and closing balances of monthly transactions for a customer.
+      operationId: getBalancesByPeriod
+      parameters:
+        - name: retailUnitCode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The market code
+
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier of the customer.
+        - name: activity
+          in: path
+          required: true
+          schema:
+            type: string
+          description: reason code
+        - name: period
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The period of the balance period.
+      responses:
+        '200':
+          description: Successfully retrieved balance information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerBalanceResponse'
+        '404':
+          description: Customer not found
+
+components:
+  schemas:
+    BalanceEvent:
+      type: object
+      required:
+        - reason
+        - reasonTime
+        - businessUnit
+        - type
+        - value
+      properties:
+        reason:
+          type: string
+          description: Reason for the balance change.
+        reasonTime:
+          type: integer
+          format: int64
+          description: Timestamp of the reason for the balance change.
+        businessUnit:
+          type: string
+          description: Business unit code.
+        type:
+          type: string
+          enum:
+            - INCREASED
+            - DECREASED
+          description: Type of the event, either INCREASED or DECREASED.
+        value:
+          type: integer
+          description: Numeric value associated with the event.
+    CustomerBalanceResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: Id
+        balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceInfo'
+    BalanceInfo:
+      type: object
+      properties:
+        openingBalance:
+          type: integer
+          description: The opening balance at the beginning of the month.
+        closingBalance:
+          type: integer
+          description: The closing balance at the end of the month.
+        adjustments:
+          type: integer
+          description: The adjustments
+    CreateBalanceEventResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the balance event.
+        reason:
+          type: string
+          description: Reason for the balance change.
+        reasonTime:
+          type: integer
+          format: int64
+          description: Timestamp of the reason for the balance change.
+        businessUnit:
+          type: string
+          description: Business unit code.
+        type:
+          type: string
+          enum:
+            - INCREASED
+            - DECREASED
+          description: Type of the event, either INCREASED or DECREASED.
+        value:
+          type: integer
+          description: Numeric value associated with the event.
+        time:
+          type: integer
+          format: int64
+          description: Timestamp of the event.
+        customerId:
+          type: string
+          description: The unique identifier of the customer.
+        market:
+          type: string
+          description: The market code
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the balance event was last updated.
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the balance event was created.
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              details:
+                type: object

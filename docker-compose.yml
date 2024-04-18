@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./services/balance-event-api
+      dockerfile: dockerfile
+    ports:
+      - '3001:8080'

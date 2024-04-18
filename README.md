@@ -27,6 +27,7 @@ This project is a simple REST-based NodeJS api with a add balance event and get 
 Run the application using:
 
 ```bash
+yarn install
 yarn start:server
 ```
 ## API Endpoints
