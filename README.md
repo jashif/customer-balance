@@ -30,6 +30,18 @@ Run the application using:
 yarn install
 yarn start:server
 ```
+### Running the Application Using Task file
+
+Taskfile is a simple task runner that allows you to define and run tasks with shell commands. It is a simple way to define tasks in a single file and run them with a simple command.
+more reference [Taskfile](https://taskfile.dev/#/)
+
+Run the application using:
+
+```bash
+task install
+task start PG_USER={{PG_USER}} PG_PASSWORD={{PG_PASSWORD}} PG_HOST={{PG_HOST}} PG_DB_NAME={{PG_DB_NAME}}
+```
+
 ## API Endpoints
 
 - `POST /api/events/:retailUnitCode/:customerId`: creates a balance event.
@@ -41,6 +53,9 @@ yarn start:server
 
 The project is organized into several packages:
 
-- `api`: Contains the api/controller implementation.
-- `routes`: Contains the api routes.
-- `core`: Contains the business logic.
+- `services`: contains microservices.
+  - `api`: Contains the api/controller implementation.
+  - `utils`: Contains the utilities.
+  - `core`: Contains the business logic.
+  - `infra`: contains the data layer.
+- `utils`: contains project utilities.

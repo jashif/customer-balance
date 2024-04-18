@@ -3,10 +3,15 @@
   "packageManager": "yarn@3.4.1",
   "private": true,
   "workspaces": [
-    "services/*"
+    "services/*",
+    "front-end/*"
   ],
   "scripts": {
     "start:server": "yarn workspaces foreach --jobs 20 --interlaced --parallel --include  '@services/*' run dev",
     "lint": "yarn workspaces foreach --jobs 20 --interlaced --parallel --include  '@services/*' run lint"
+  },
+  "devDependencies": {
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5"
   }
 }

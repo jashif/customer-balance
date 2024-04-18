@@ -1,0 +1,43 @@
+# https://taskfile.dev
+
+version: '3'
+env:
+  HOST_PROJECT_PATH: |
+    {{- .HOST_PROJECT_PATH | default .PWD -}}
+  HOST_HOME_PATH: |
+    {{- .HOST_HOME_PATH | default .HOME -}}
+
+tasks:
+  install:
+    desc: install
+    silent: true
+    run: when_changed
+    sources:
+      - '{{.HOST_PWD}}/services/**/*'
+    cmds:
+      - |
+        yarn install
+  start:
+    desc: starts and push event.
+    silent: true
+    run: when_changed
+    sources:
+      - '{{.HOST_PWD}}/services/**/*'
+    env:
+      PORT: 3001
+      PG_USER: '{{.PG_USER}}'
+      PG_PASSWORD: '{{.PG_PASSWORD}}'
+      PG_HOST: '{{.PG_HOST }}'
+      PG_DB_NAME: '{{.PG_DB_NAME }}'
+    cmds:
+      - |
+        yarn start:server
+  send-events:
+    desc: send events
+    silent: true
+    run: when_changed
+    sources:
+      - '{{.HOST_PWD}}/services/**/*'
+    cmds:
+      - |
+        node utils/send-events.js
