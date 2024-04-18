@@ -1,0 +1,8 @@
+terraform
+build
+node_modules
+dist
+.env
+cache
+*.gz
+.vscode
