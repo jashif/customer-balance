@@ -1,4 +1,5 @@
 # Customer balance Application
+[Docs](https://customer-balance-ti2qwthvqa-ey.a.run.app/api-docs/)
 
 ## Overview
 
