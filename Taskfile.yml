@@ -41,3 +41,20 @@ tasks:
     cmds:
       - |
         node utils/send-events.js
+  docker-publish:
+    desc: docker publish
+    silent: true
+    cmds:
+      - |
+        cd services/balance-event-api
+        docker build -t gcr.io/customer-balance-420809/customer-balance .
+        docker push gcr.io/customer-balance-420809/customer-balance
+  deploy:
+    desc: deploy
+    silent: true
+    cmds:
+      - |
+        cd terraform
+        terraform init
+        terraform plan -var-file="secrets.tfvars"  -out="out.plan"
+        terraform apply "out.plan"

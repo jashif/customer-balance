@@ -1,7 +1,7 @@
 const axios = require('axios');
 const events = require('../docs/task-a.sample.json');
 
-const baseURL = 'https://customer-balance-ynxku3oura-ey.a.run.app/api/events'; // Adjust this URL to your API's actual URL
+const baseURL = 'https://customer-balance-ti2qwthvqa-ey.a.run.app/api/events'; // Adjust this URL to your API's actual URL
 
 async function sendEvent(event) {
   const url = `${baseURL}/${event.market}/${event.customerId}`;
