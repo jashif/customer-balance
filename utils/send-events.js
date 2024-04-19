@@ -26,5 +26,3 @@ async function sendAllEvents() {
 }
 
 sendAllEvents();
-
-//{"id":"iKplH7z7BSvYvi_m-PDJM","time":1703941515099,"market":"FI","customerId":"fi.customer-03","reason":"ATTEND_EVENT","reasonTime":1702261479942,"businessUnit":"BU03","type":"INCREASED","value":19},
