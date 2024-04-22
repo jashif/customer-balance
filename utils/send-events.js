@@ -1,12 +1,15 @@
 const axios = require('axios');
 const events = require('../docs/task-a.sample.json');
 
-const baseURL = 'https://customer-balance-ti2qwthvqa-ey.a.run.app/api/events'; // Adjust this URL to your API's actual URL
+const baseURL = 'http://localhost:3001/api/events'; // Adjust this URL to your API's actual URL
 
 async function sendEvent(event) {
+  console.log('Sending event:', event);
   const url = `${baseURL}/${event.market}/${event.customerId}`;
   try {
     const response = await axios.post(url, {
+      id: event.id,
+      time: event.time,
       type: event.type,
       reasonTime: event.reasonTime,
       reason: event.reason,
@@ -20,6 +23,7 @@ async function sendEvent(event) {
 }
 
 async function sendAllEvents() {
+  console.log('Sending all events...');
   for (let event of events) {
     await sendEvent(event);
   }

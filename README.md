@@ -40,6 +40,8 @@ Run the application using:
 
 ```bash
 task install
+
+docker run  -e POSTGRES_PASSWORD=123456 -d postgres
 task start PG_USER={{PG_USER}} PG_PASSWORD={{PG_PASSWORD}} PG_HOST={{PG_HOST}} PG_DB_NAME={{PG_DB_NAME}}
 ```
 

@@ -6,7 +6,7 @@ info:
 servers:
   - url: 'http://localhost:3001'
     description: Local server
-  - url: 'https://customer-balance-ynxku3oura-ey.a.run.app'
+  - url: 'https://customer-balance-ti2qwthvqa-ey.a.run.app'
     description: Google Cloud Run server
   - url: /
     description: host
@@ -90,12 +90,20 @@ components:
     BalanceEvent:
       type: object
       required:
+        - id
+        - time
         - reason
         - reasonTime
         - businessUnit
         - type
         - value
       properties:
+        id:
+          type: string
+          description: event id
+        time:
+          type: number
+          description: event time
         reason:
           type: string
           description: Reason for the balance change.

@@ -27,20 +27,19 @@ async function getBalances(request) {
     return [];
   }
   for (let month = 1; month <= endMonth; month++) {
-    const startOfMonth = new Date(period, month - 1, 1);
-    const endOfMonth = new Date(period, month, 0);
+    const startOfMonth = new Date(period, month - 1, 1).getTime();
+    const endOfMonth = new Date(period, month, 0, 24, 59, 59).getTime();
     let adjustments = 0;
     let openingBalance = 0;
     let closingBalance = 0;
 
     snapshot.forEach((doc) => {
       const event = doc.toJSON();
-      const eventDate = new Date(event.reasonDate);
-      if (eventDate < startOfMonth) {
+      if (event.reasonTime < startOfMonth) {
         openingBalance += event.type === 'INCREASED' ? event.value : -event.value;
         adjustments += event.type === 'INCREASED' ? event.value : -event.value;
       }
-      if (eventDate >= startOfMonth && eventDate <= endOfMonth) {
+      if (event.reasonTime >= startOfMonth && event.reasonTime <= endOfMonth) {
         closingBalance += event.type === 'INCREASED' ? event.value : -event.value;
       }
     });

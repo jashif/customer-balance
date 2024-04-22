@@ -16,14 +16,12 @@ const moment = require('moment');
  */
 async function addBalanceEvent(req, res) {
   const payload = req.body;
-  payload.time = new Date().getTime();
-  payload.id = Math.random().toString(36).substring(7);
   payload.market = req.params.retailUnitCode;
   payload.customerId = req.params.customerId;
   payload.reasonDate = moment(req.body.reasonTime).format('YYYY-MM-DD HH:mm:ss');
   const event = await addBalanceCommand(payload);
   res.json({
-    ...event
+    ...event,
   });
 }
 /**
