@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: balance
+spec:
+  selector:
+    app: balance
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: balance
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: balance
+  template:
+    metadata:
+      labels:
+        app: balance
+    spec:
+      containers:
+        - name: app
+          image: docker.io/library/balance-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PG_HOST
+              value: postgres
+            - name: PG_USER
+              value: admin
+            - name: PG_DB_NAME
+              value: balance
+            - name: PG_PASSWORD
+              value: admin
+          imagePullPolicy: Never
